@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
@@ -6,6 +7,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,6 +27,7 @@ function Login() {
                 setMessage("Login successful!");
                 // Save userId to localStorage for session
                 if (data.userId) localStorage.setItem('userId', data.userId);
+                setTimeout(() => navigate("/"), 800);
             } else {
                 setMessage(data.message || "Login failed.");
             }
@@ -54,7 +57,7 @@ function Login() {
                 />
                 <button type="submit" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
                 {message && <p style={{ color: message.includes("success") ? "green" : "red" }}>{message}</p>}
-                <p>Don't have an account? <a href="/register">Register</a></p>
+                <p>Don't have an account? <a href="/signup">Register</a></p>
             </form>
         </div>
     );

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './Profile.css';
+import React, { useEffect, useState } from "react";
+import "./Profile.css";
 
 function Profile() {
     const [user, setUser] = useState(null);
@@ -7,39 +7,45 @@ function Profile() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        // Get userId from localStorage (set after login)
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem("userId");
         if (!userId) {
-            setError('You are not logged in.');
+            setError("You are not logged in.");
             setLoading(false);
             return;
         }
         fetch(`http://localhost:3001/users/${userId}`)
             .then(res => res.json())
             .then(data => {
-                if (data && data.username) {
-                    setUser(data);
-                } else {
-                    setError('Failed to load profile.');
-                }
+                setUser(data);
                 setLoading(false);
             })
             .catch(() => {
-                setError('Error connecting to server.');
+                setError("Error loading profile.");
                 setLoading(false);
             });
     }, []);
 
-    if (loading) return <div className="profile-container">Loading...</div>;
-    if (error) return <div className="profile-container" style={{color:'red'}}>{error}</div>;
+    const handleLogout = () => {
+        localStorage.removeItem("userId");
+        window.location.href = "/login";
+    };
 
+    if (loading) return <div className="profile-container">Loading...</div>;
+    if (error) return <div className="profile-container" style={{ color: "red" }}>{error}</div>;
+    if (!user) return <div className="profile-container">Profile not found</div>;
+
+    // Show profile for all user types (buyer, seller, admin)
     return (
         <div className="profile-container">
-            <h2>My Profile</h2>
-            <p>Name: {user.firstName} {user.lastName}</p>
-            <p>Username: {user.username}</p>
-            <p>User Type: {user.userType}</p>
-            {/* Add edit profile functionality if needed */}
+            <div className="profile-card">
+                <div className="profile-avatar">
+                    <span>{user.firstName?.[0] || user.username?.[0] || "U"}</span>
+                </div>
+                <h2>{user.firstName || ""} {user.middleName ? user.middleName + " " : ""}{user.lastName || ""}</h2>
+                <p className="profile-username">@{user.username}</p>
+                <p className="profile-type">User Type: <b>{user.userType}</b></p>
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            </div>
         </div>
     );
 }
