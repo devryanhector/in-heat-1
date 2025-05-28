@@ -1,0 +1,15 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend microservices orchestrator",
+  "scripts": {
+    "install:all": "npm-run-all --parallel install:cart install:order install:product install:user",
+    "install:cart": "npm install --prefix ./_cartMicroservice",
+    "install:order": "npm install --prefix ./_orderMicroservice",
+    "install:product": "npm install --prefix ./_productMicroservice",
+    "install:user": "npm install --prefix ./_userMicroservice"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
