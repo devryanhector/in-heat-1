@@ -19,7 +19,7 @@ function Header() {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <Link to="/" onClick={closeMenu}>in-heat Treats</Link>
+        <Link to="/" onClick={closeMenu}>Summer</Link>
       </div>
       <button
         className={`hamburger ${menuOpen ? 'open' : ''}`}
