@@ -8,6 +8,7 @@ import Checkout from './pages/checkout';
 import Profile from './pages/Profile';
 import OrderSummary from './pages/OrderSummary';
 import Header from './pages/Navar';
+import Carts from './pages/Carts';
 
 function App() {
   return (
@@ -17,10 +18,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/product/:id" element={<Product />} />
         <Route path="/product" element={<Product />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/order-summary" element={<OrderSummary />} />
+        <Route path="/carts" element={<Carts />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./home.css";
 
 function Home() {
@@ -14,6 +14,8 @@ function Home() {
     const [searchTerm, setSearchTerm] = useState("");
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
@@ -85,6 +87,7 @@ function Home() {
             const data = await res.json();
             if (res.ok) {
                 setCartMsg("Added to cart!");
+                navigate("/carts"); // Redirect to cart after adding
             } else {
                 setCartMsg(data.message || "Error adding to cart");
             }

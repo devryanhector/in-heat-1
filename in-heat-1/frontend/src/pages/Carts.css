@@ -1,84 +1,88 @@
 .cart-container {
     max-width: 900px;
     margin: 3rem auto;
-    padding: 1rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1.5px 6px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eee;
+    padding: 2rem;
 }
 
-.cart-items {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.cart-container h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #222;
+}
+
+.cart-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .cart-item {
     display: flex;
-    gap: 1.5rem;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 8px;
     align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
 }
 
 .cart-item img {
-    width: 120px;
-    border-radius: 6px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1px solid #eee;
 }
 
-.cart-item-info {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.cart-item-info h3 {
-    flex: 2;
-}
-
-.cart-item-info p {
+.cart-item-details {
     flex: 1;
-    font-weight: bold;
 }
 
-.cart-item-info input {
-    width: 60px;
-    padding: 0.25rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.cart-item-details strong {
+    font-size: 1.2rem;
+    color: #222;
 }
 
-.cart-item-info button {
-    background: #ff4444;
-    color: white;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.cart-item-details span {
+    display: block;
+    color: #555;
+    margin-top: 0.3rem;
 }
 
-.cart-item-info button:hover {
-    background: #cc0000;
-}
-
-.cart-total {
+.cart-empty {
+    text-align: center;
+    color: #888;
+    font-size: 1.2rem;
     margin-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.checkout-btn {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+/* Responsive Design */
+@media (max-width: 700px) {
 
-.checkout-btn:hover {
-    background-color: #333;
+    .product-container,
+    .cart-container {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    .product-image,
+    .cart-item img {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 }

@@ -42,9 +42,9 @@ function Header() {
         </li>
         <li>
           <Link
-            to="/checkout"
+            to="/carts"
             onClick={closeMenu}
-            className={location.pathname === '/checkout' ? 'active-link' : ''}
+            className={location.pathname === '/carts' ? 'active-link' : ''}
           >
             Cart
           </Link>

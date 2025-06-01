@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import "./Product.css";
 
 function Product() {
@@ -11,6 +11,7 @@ function Product() {
     const [adding, setAdding] = useState(false);
     const [user, setUser] = useState(null);
     const [sellerProducts, setSellerProducts] = useState([]);
+    const [seller, setSeller] = useState(null);
     const [form, setForm] = useState({
         name: "",
         description: "",
@@ -21,6 +22,7 @@ function Product() {
     });
     const [formMsg, setFormMsg] = useState("");
     const [editingId, setEditingId] = useState(null);
+    const [cartQuantity, setCartQuantity] = useState(1);
     const navigate = useNavigate();
 
     // Fetch user
@@ -60,6 +62,11 @@ function Product() {
             .then((data) => {
                 if (data && data.name) {
                     setProduct(data);
+                    // Fetch seller info
+                    fetch(`http://localhost:3001/users/${data.sellerId}`)
+                        .then(res => res.json())
+                        .then(setSeller)
+                        .catch(() => setSeller(null));
                 } else {
                     setError("Product not found");
                 }
@@ -148,13 +155,16 @@ function Product() {
     const handleDelete = async (prodId) => {
         if (!window.confirm("Are you sure you want to delete this product?")) return;
         try {
+            const userId = localStorage.getItem("userId");
             const res = await fetch(`http://localhost:3002/products/${prodId}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: { 'user-id': userId }
             });
             if (res.ok) {
                 setSellerProducts(prev => prev.filter(p => p._id !== prodId));
             } else {
-                alert("Error deleting product");
+                const data = await res.json();
+                alert(data.message || "Error deleting product");
             }
         } catch {
             alert("Error deleting product");
@@ -187,6 +197,7 @@ function Product() {
             const data = await res.json();
             if (res.ok) {
                 setMessage("Added to cart!");
+                navigate("/carts"); // Redirect to cart after adding
             } else {
                 setMessage(data.message || "Error adding to cart");
             }
@@ -245,8 +256,28 @@ function Product() {
                 <p><strong>Price:</strong> ${product.price?.toFixed(2)}</p>
                 <p><strong>Stock:</strong> {product.quantity}</p>
                 <p><strong>Category:</strong> {product.category}</p>
-                <button onClick={handleAddToCart} disabled={adding}>{adding ? "Adding..." : "Add to Cart"}</button>
+                {seller && (
+                    <p><strong>Seller:</strong> {seller.name || seller.email}</p>
+                )}
+                <label>
+                    Quantity:
+                    <input
+                        type="number"
+                        min="1"
+                        max={product.quantity}
+                        value={cartQuantity}
+                        onChange={e => setCartQuantity(Math.max(1, Math.min(product.quantity, Number(e.target.value))))}
+                        style={{ width: "60px", marginLeft: "8px" }}
+                    />
+                </label>
+                <button onClick={handleAddToCart} disabled={adding || cartQuantity > product.quantity}>
+                    {adding ? "Adding..." : "Add to Cart"}
+                </button>
                 {message && <p style={{ marginTop: "1rem", color: message.includes("Added") ? "green" : "red" }}>{message}</p>}
+                {message === "Added to cart!" && (
+                    <button onClick={() => navigate("/cart")}>Go to Cart</button>
+                )}
+                <Link to={`/product/${product._id}`}>View</Link>
             </div>
         );
     }
